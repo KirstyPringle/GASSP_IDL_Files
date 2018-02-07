@@ -6,18 +6,18 @@ units2change=$
     'um3/cm3','um^3/cm^3','um3cm-3','micrometers^3/cm^3','um3/cm3@ambient','um^3/scc','um3 cm-3 at 1atm, 0C','um3cm-3',$
     'um2/cm3','um^2/cm^3','um2cm-3','micrometers^2/cm^3','um2/cm3@ambient','um^2/scc','um2cm-3',$
     'ug/m^3','ug/m3','mg/m3','ugC/m3','ugstdm-3','µg / m3','ug/sm^3',$
-    'ng/m^3','ng/m3','ngstdm-3','ng m-3 at 1atm, 0C',$
+    'ng/m^3','ng/m3','ngstdm-3','ng m-3 at 1atm, 0C','ngm-3', 'ng sm^-3', $
     'ng/kg',$
     'N degree','degree N','degree_N','Deg_N','degN',$
     'E degree','degree E','degree_E','Deg_E','degE',$
-    'degK','degree_K','degree_K, CAPS',$
-    'degC','degree_C','degrees C','degree C','Celcius','deg_C','Celcius',$
+    'degK','degree_K','degree_K, CAPS','degree_k caps','K',  $
+    'degC','degree_C','degrees C','degree C','Celcius','deg_C','C',$
     'pct','percent','%, CAPS',$
-    'mb','mbar','hPa, CAPS',$
+    'mb','mbar','hPa, CAPS','Mb',$
     'meters','micrometers',$
     'km, POS',$
     'unitless','no units',' ','#',$;check this last one!
-    'm/s', 'Seconds since 1970-01-01, 00:00:00 UTC']                      
+    'm/s', 'Seconds since 1970-01-01, 00:00:00 UTC', 'Seconds since 1970-01-01, 00:00:00 UTC']                      
 
 
 stdunits=$
@@ -26,18 +26,19 @@ stdunits=$
     'um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3 ambient','um3 cm-3 stp','um3 cm-3 stp','um3 cm-3',$
     'um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3 ambient','um2 cm-3 stp','um2 cm-3',$
     'ug m-3','ug m-3','ug m-3','ugC m-3','ug m-3 stp','ug m-3','ug m-3 stp',$  ;;ugs m-3??
-    'ng m-3','ng m-3','ng m-3 stp','ng m-3 stp',$
+    'ng m-3','ng m-3','ng m-3 stp','ng m-3 stp','ng m-3','ng m-3',$
     'ng kg-1',$
-    'degree_north','degree_north','degree_north','degree_north','degree_north',$
-    'degree_east','degree_east','degree_east','degree_east','degree_east',$
-    'K','K','K',$
-    'C','C','C','C','C','C','C',$
+    'degrees_north','degrees_north','degrees_north','degrees_north','degrees_north',$
+    'degrees_east','degrees_east','degrees_east','degrees_east','degrees_east',$
+    'Kelvin','Kelvin','Kelvin','Kelvin','Kelvin',$
+    'Celcius','Celcius','Celcius','Celcius','Celcius','Celcius','Celcius',$
     '%','%','%',$
-    'hPa','hPa','hPa',$
+    'hPa','hPa','hPa','hPa',$
     'm','um',$
     'km',$
-    'none','none','none','none',$
-    'm s-1', 'Seconds since 1970-01-01 00:00:00 ']
+;;    'none','none','none','none',$
+    '','','','',$
+    'm s-1', 'Seconds since 1970-01-01 00:00:00',  'Seconds since 1970-01-01 00:00:00']
 
 ;help,units2change,stdunits
 if n_elements(units2change) ne n_elements(stdunits) then stop,'****Unit array dimensions do not match****'
@@ -48,9 +49,9 @@ for u=0,n_elements(unit_arr)-1 do begin
 
    unitmatch=where(strmatch(units2change,unit_arr[u],/fold_case) eq 1,val)
    if val eq 1 then begin
-      print,'Old unit:',unit_arr[u]
+;      print,'Old unit:',unit_arr[u]
       unit_arr[u]=stdunits[unitmatch]
-      print,'New unit:',unit_arr[u]
+;      print,'New unit:',unit_arr[u]
    endif
    if val eq 0 then begin
 
