@@ -344,6 +344,7 @@ for k=0,num_var2-1 do begin
        ;;if (varatt[k,jj] eq 'units') or (varatt[k,jj] eq 'missing_value') or $
        ;; ;;;****NOT ONLY THESE VARIABLE ATTRIBUTES***
        ;;   (varatt[k,jj] eq 'long_name') then begin
+
           if (varatt[k,jj] eq 'missing_value') or $
              (varatt[k,jj] eq 'TEMPORARY_FillValue') or $
              (varatt[k,jj] eq 'scale_factor') or $

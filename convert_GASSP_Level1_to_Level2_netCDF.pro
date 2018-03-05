@@ -8,18 +8,18 @@
 
 ;; Updated for version vn2.3
 
-projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
-         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
-         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
-         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
-         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
-         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
-         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
-         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
-         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
-         'PEMWestB','PEMWestA','AMF_stations'] 
+;projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
+;         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
+;         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
+;         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
+;         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
+;         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
+;         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
+;         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
+;         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
+;         'PEMWestB','PEMWestA','AMF_stations'] 
 
-;;projarr=['EBAS_ACTRIS']
+projarr=['EBAS_ACTRIS']
 
 ;;;seg fault on 17196, /nfs/a107/ear3clsr/GASSP/Processed_data/AMF_stations/EasternNorthAtlantic/CCN.enaaosccn100C1.a1.20140112.000000.nc
 
@@ -250,7 +250,7 @@ for i=0L,nfiles-1 do begin
 	;========Select variable(s) to be written to netcdf file==============
 	
 	;read in lookup table which defines variable types
-	OPENR,luntype,'/nfs/see-fs-02_users/earnadr/GASSP/vars_vocals_test3.csv',/get_lun
+	OPENR,luntype,'vars_vocals_test3.csv',/get_lun
 	
 	read_type=''
 	type_count=0
@@ -271,7 +271,7 @@ for i=0L,nfiles-1 do begin
 	
 	
 	;Read in variable name/class/code
-	OPENR,luntype,'/nfs/see-fs-02_users/earnadr/GASSP/vars_vocals_test3.csv',/get_lun
+	OPENR,luntype,'vars_vocals_test3.csv',/get_lun
 	
 	type_count=0
 	
