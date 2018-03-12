@@ -8,27 +8,45 @@
 
 ;; Updated for version vn2.3
 
-;projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
-;         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
-;         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
-;         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
-;         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
-;         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
-;         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
-;         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
-;         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
-;         'PEMWestB','PEMWestA','AMF_stations'] 
+projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
+         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
+         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
+         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
+         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
+         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
+         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
+         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
+         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
+         'PEMWestB','PEMWestA','AMF_stations','EBAS_ACTRIS'] 
 
-projarr=['EBAS_ACTRIS']
+;;projarr=['A-PAD']
+;;projarr=['IMPROVE','A-PAD','EBAS_ACTRIS']
+;projarr=['IMPROVE']
 
 ;;;seg fault on 17196, /nfs/a107/ear3clsr/GASSP/Processed_data/AMF_stations/EasternNorthAtlantic/CCN.enaaosccn100C1.a1.20140112.000000.nc
 
 ;;****'EBAS_ACTRIS',,****STILL TO PROCESS "NSD" DATA TO LEVEL 1!!!!!!****
 ;;EBAS_ACTRIS/pm2_5 files are: 826,1323
 
-path='/nfs/a201/earkpr/DataVisualisation/GASSP/Nigel_Code/'
+;;path='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data'
+outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data_SCRAP/'
+
+print,outdir
+
+; Take a copy of all files in cwd and copy to path for reference.  Pipe git revision number to file.
+SPAWN,'rm GIT_REVISION_Number.dat'
+SPAWN,'git log --stat > GIT_REVISION_Number.dat'
+SPAWN,'ls' 
+SPAWN,'tar -cvzf GASSP_IDL_Files.tar *'
+SPAWN,'mv GASSP_IDL_Files.tar /nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data_SCRAP/.'
+ 
+print," HERE "
+exit
+
 ;path='/nfs/a201/earnadr/GASSP/working_code/'
-file=path+'Processed_file_list_latest.txt'
+;;file=path+'Processed_file_list_latest.txt'
+;;file='Processed_file_list_latest.txt'
+file='Processed_file_list_latest.txt'
 openr,lun,file,/get_lun
 header=''
 readf,lun,header
@@ -48,7 +66,6 @@ pres_cf='Air_pressure'
 dpres_cf='Dynamic_pressure'
 
 ;;outdir='/nfs/a158/earnadr/GASSP/Level_2_test/'
-outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/Nigel_Code/Level2/'
 
 ;NADR - open a file to write variable names to
 ;OPENW,lunvar,'/nfs/a158/earnadr/GASSP/Level_2_test/vars1.txt',/get_lun
@@ -111,6 +128,11 @@ for i=0L,nfiles-1 do begin
     for ivar=0,num_var-1 do unit_arr[ivar]=reform(varatts_val[ivar,where(varatts[ivar,*] eq 'units')])
     miss_arr=reform(varatts_val[where(varatts eq 'missing_value')])
 
+    ;KP_Comment:  For station data re-name missing_value to _Fillvalue for cf-compliance
+    ;  Just for Station, or all data?   if(platform eq 'Station')then varatts[where(varatts eq 'missing_value')]='_FillValue'
+    varatts[where(varatts eq 'missing_value')]='TEMPORARY_FillValue'
+    varatts[where(varatts eq '_FillValue')]='TEMPORARY_Fillvalue'    ; Note, change to lower case v.  Edit using nco later.
+
     if (var_names[0] eq 'JDAY') or (var_names[1] eq 'JDAY') then stop;;goto,skip_file ;************************************
 
     print,'Variable names specified:',file_vars
@@ -156,11 +178,35 @@ for i=0L,nfiles-1 do begin
 
     ;-Standardise time stamp
     print,'BEF standardise_timestamp'
+    print,'gloatt = ',gloatt
+    print,'gloatt_val = ',gloatt_val
+    print,'var_names_cf = ',var_names_cf
+    print,'time_cf = ',time_cf
+    
     standardise_timestamp,gloatt,gloatt_val,var_names_cf,time_cf,$
                           unit_arr,miss_arr,data,time_new,timeend,timestart
-    print,'AFT standardise_timestamp'
 
-    
+    ;print,'time_new =',time_new
+    ;print,'timeend =',timeend
+    ;print,'timestart=',timestart
+    ;print,'AFT standardise_timestamp'
+    ;print,'gloatt =',gloatt
+    ;print,'gloatt_val = ',gloatt_val
+    ;print,'var_names_cf = ',var_names_cf
+    ;print,' time_cf = ',time_cf
+    ;print,' unit_arr = ',unit_arr
+    ;print,' miss_arr = ',miss_arr
+    ;print,' data = ',data
+
+    ; EBAS_ACTRIS has time_end as a 1D array, not needed.
+    ; Set time_end units from the variable units, and time_end value from the time_new array
+    if(projarr[str] eq 'EBAS_ACTRIS')then begin
+       timeend = time_new[-1]
+       timestart = time_new[0] 
+       unit_arr[1] = unit_arr[0]
+       ;;print,'timeend = ',timeend,' timestart = ', timestart
+    endif
+
     ;-Convert altitude variable to metres
     if Platform eq 'Aircraft' then $
        convert_altinfeet_to_altinmetres,gloatt,gloatt_val,var_names_cf,$
@@ -229,7 +275,7 @@ for i=0L,nfiles-1 do begin
     ;-Standardised GASSP & Software version tags
     gasspv=where(strmatch(gloatt[*],'Gassp_version',/fold_case) eq 1) ;'GASSP_Version'
     gloatt[gasspv]='GASSP_Version'
-    gloatt_val[gasspv]='2.1'
+    gloatt_val[gasspv]='2.2'
     gloatt_val[where(gloatt[*] eq 'Software_Version')]='Level1_to_Level2_IDL'
 
     ;-Replace "Unknown" data tag fields with "NULL"
