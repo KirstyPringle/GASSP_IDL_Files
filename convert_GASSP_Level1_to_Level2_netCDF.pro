@@ -29,7 +29,7 @@ projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT200
 ;;EBAS_ACTRIS/pm2_5 files are: 826,1323
 
 ;;path='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data'
-outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data_SCRAP/'
+outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data/'
 
 print,outdir
 
@@ -38,11 +38,8 @@ SPAWN,'rm GIT_REVISION_Number.dat'
 SPAWN,'git log --stat > GIT_REVISION_Number.dat'
 SPAWN,'ls' 
 SPAWN,'tar -cvzf GASSP_IDL_Files.tar *'
-SPAWN,'mv GASSP_IDL_Files.tar /nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data_SCRAP/.'
+SPAWN,'mv GASSP_IDL_Files.tar /nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data/.'
  
-print," HERE "
-exit
-
 ;path='/nfs/a201/earnadr/GASSP/working_code/'
 ;;file=path+'Processed_file_list_latest.txt'
 ;;file='Processed_file_list_latest.txt'
