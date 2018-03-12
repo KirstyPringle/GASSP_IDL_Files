@@ -5,8 +5,15 @@ tind=where(strmatch(var_names_cf,time_cf,/fold_case) eq 1)
 time=data.(tind)
 timeend=time
 timestart=time
+
+;print,'timeend',timeend
+;print,'timestart',timestart
+;;;print,'time_new ',time_new
+;print,'time = ',time
 tinfo=strsplit(unit_arr[tind],',- :',/extract)
 print, 'Time stamp info: ',tinfo[0]+' '+tinfo[1]+' '+tinfo[2]+'-'+tinfo[3]+'-'+tinfo[4]+','+tinfo[5]+':',tinfo[6]+':'+tinfo[7]
+;print, ' '
+
 if tinfo[2] ne '1970' then begin
    if tinfo[4] eq '00' then begin
       startdate=JULDAY(tinfo[3],'01',tinfo[2],tinfo[5],tinfo[6],tinfo[7])-1
@@ -17,11 +24,20 @@ if tinfo[2] ne '1970' then begin
    jultime = startdate - JULDAY(1,1,1970,0,0,0)
    
    dy_test=strmatch(tinfo[0],'*days*',/fold_case)
+   print,' tinfo[0] = ',tinfo[0],' dy_test = ',dy_test
+
    if dy_test eq 1 then begin
       diff=time[1]-time[0]
+
+      print,' diff = ',diff, time[1], time[0]
+      print,'size(time,/type) = ',size(time,/type)
+
+      print,''
       if ((size(time,/type) eq 4) or (size(time,/type) eq 5))$ ;FLOAT or DOUBLE
          and (diff lt 1.0) then begin                                      
          time_temp=long64(time*24*60*60) ;-Calculate time in seconds
+         print,'time_temp = ',time_temp
+
          ;-Calculate # seconds since 1970-01-01
          if time[0] lt 1.0 then var_time=long64(jultime)* 24LL * 60 * 60 $ ;-Assumes day 1 of year is zero
          else var_time=long64(jultime-1)* 24LL * 60 * 60                   ;-Assumes day 1 of year is one
@@ -29,17 +45,23 @@ if tinfo[2] ne '1970' then begin
          ;;zero but arrays starts on any other
          ;;day than 1st Jan
          time_new=time_temp+var_time
+         print,' time_new =',time_new
+         print,' var_names_cf =',var_names_cf
 
          ;-Test for end time stamps
          te=where(strmatch(var_names_cf,'TIME_END',/fold_case) eq 1,te_vals)
+         print,' te  = ',te,te_vals
          if te_vals eq 1 then begin
             timeend_temp=long64(data.(te)*24*60*60) ;-Calculate time in seconds
             timeend=timeend_temp+var_time             
             unit_arr[te]='Seconds since 1970-01-01 00:00:00'
+            print,' unit_arr[te] ',unit_arr[te]
          endif
       endif else begin
+         print, 'ZZZZ Time stamp info: ',tinfo[0]+' '+tinfo[1]+' '+tinfo[2]+'-'+tinfo[3]+'-'+tinfo[4]+','+tinfo[5]+':',tinfo[6]+':'+tinfo[7]
          var_time= long64(jultime) ;-Calculate time in days since 1970-01-01
          time_new=(long64(time)+var_time)* 24LL * 60 * 60
+         print,'time_new = ',time_new
       endelse
    endif
    hr_test=strmatch(tinfo[0],'*hours*',/fold_case)

@@ -373,15 +373,21 @@ if vnval eq 1 then var_names_cf[vn]='EC_PM1'
 vn=where(STRMATCH(file_vars,'SUBOC',/FOLD_CASE) EQ 1,vnval)
 if vnval eq 1 then var_names_cf[vn]='OC_PM1'
 vn=where(STRMATCH(file_vars,'SUB_2_5_EC',/FOLD_CASE) EQ 1,vnval)
-if vnval eq 1 then var_names_cf[vn]='EC_PM2P5'
+if vnval eq 1 then var_names_cf[vn]='EC_PM2p5'
 vn=where(STRMATCH(file_vars,'SUB_2_5_OC',/FOLD_CASE) EQ 1,vnval)
-if vnval eq 1 then var_names_cf[vn]='OC_PM2P5'
+if vnval eq 1 then var_names_cf[vn]='OC_PM2p5'
 vn=where(STRMATCH(file_vars,'PM_2_5',/FOLD_CASE) EQ 1,vnval)
-if vnval eq 1 then var_names_cf[vn]='PM2P5'
+if vnval eq 1 then var_names_cf[vn]='PM2p5'
 vn=where(STRMATCH(file_vars,'PM_12_5',/FOLD_CASE) EQ 1,vnval)
 if vnval eq 1 then var_names_cf[vn]='PM12P5'
+vn=where(STRMATCH(file_vars,'PM25_conc',/FOLD_CASE) EQ 1,vnval)
+if vnval eq 1 then var_names_cf[vn]='PM2p5'
 vn=where(STRMATCH(file_vars,'pm25_mass',/FOLD_CASE) EQ 1,vnval)
-if vnval eq 1 then var_names_cf[vn]='PM25_CONC'
+if vnval eq 1 then var_names_cf[vn]='PM2p5'
+
+print,var_names_cf[vn]
+
+
 vn=where(STRMATCH(file_vars,'SUBMASS',/FOLD_CASE) EQ 1,vnval)
 if vnval eq 1 then var_names_cf[vn]='PM1'
 vn=where(STRMATCH(file_vars,'SUPMASS',/FOLD_CASE) EQ 1,vnval)
@@ -555,5 +561,14 @@ if vnval eq 1 then var_names_cf[vn]='LATITUDE'
 vn=where(STRMATCH(file_vars,'LONGT*',/FOLD_CASE) EQ 1,vnval)
 if vnval eq 1 then var_names_cf[vn]='LONGITUDE'
 
+
+print,"End of match"
+
+print,"file_vars = ",file_vars
+print,"spec_arr = ",spec_arr
+print,"var_names_cf = ",var_names_cf
+
+print,"***************"
+print,""
 end
 ;----------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@ units2change=$
     'per std cc','particle cm-3 at 1atm, 0C','parts/cc','count/cm^3','cm3',$
     'um3/cm3','um^3/cm^3','um3cm-3','micrometers^3/cm^3','um3/cm3@ambient','um^3/scc','um3 cm-3 at 1atm, 0C','um3cm-3',$
     'um2/cm3','um^2/cm^3','um2cm-3','micrometers^2/cm^3','um2/cm3@ambient','um^2/scc','um2cm-3',$
-    'ug/m^3','ug/m3','mg/m3','ugC/m3','ugstdm-3','µg / m3','ug/sm^3',$
+    'ug/m^3','ug/m3','mg/m3','ugC/m3','ugstdm-3','µg / m3','ug/sm^3',' ug/m3',$
     'ng/m^3','ng/m3','ngstdm-3','ng m-3 at 1atm, 0C','ngm-3', 'ng sm^-3', $
     'ng/kg',$
     'N degree','degree N','degree_N','Deg_N','degN',$
@@ -21,12 +21,12 @@ units2change=$
 
 
 stdunits=$
-   ['cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3 stp','cm-3 stp',$
-    'cm-3 stp','cm-3 stp','cm-3','cm-3','cm-3',$
-    'um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3 ambient','um3 cm-3 stp','um3 cm-3 stp','um3 cm-3',$
-    'um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3 ambient','um2 cm-3 stp','um2 cm-3',$
-    'ug m-3','ug m-3','ug m-3','ugC m-3','ug m-3 stp','ug m-3','ug m-3 stp',$  ;;ugs m-3??
-    'ng m-3','ng m-3','ng m-3 stp','ng m-3 stp','ng m-3','ng m-3',$
+   ['cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3',$
+    'cm-3','cm-3','cm-3','cm-3','cm-3',$
+    'um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3 ambient','um3 cm-3','um3 cm-3','um3 cm-3',$
+    'um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3 ambient','um2 cm-3','um2 cm-3',$
+    'ug m-3','ug m-3','ug m-3','ugC m-3','ug m-3','ug m-3','ug m-3','ug m-3',$  ;;ugs m-3??
+    'ng m-3','ng m-3','ng m-3','ng m-3','ng m-3','ng m-3',$
     'ng kg-1',$
     'degrees_north','degrees_north','degrees_north','degrees_north','degrees_north',$
     'degrees_east','degrees_east','degrees_east','degrees_east','degrees_east',$
