@@ -555,6 +555,15 @@ vn=where(STRMATCH(file_vars,'*0_94*',/FOLD_CASE) EQ 1,vnval)
 if vnval ge 1 then var_names_cf[vn] = var_names_cf[vn].Replace('0_94', '0P94')
 
 
+;vn=where(STRMATCH(file_vars,'NUM',/FOLD_CASE) EQ 1,vnval)
+;if vnval ge 1 then var_names_cf[vn] = 'num'
+;vn=where(STRMATCH(file_vars,'ORG',/FOLD_CASE) EQ 1,vnval)
+;if vnval ge 1 then var_names_cf[vn] = 'org'
+;vn=where(STRMATCH(file_vars,'SO4',/FOLD_CASE) EQ 1,vnval)
+;if vnval ge 1 then var_names_cf[vn] = STRLOWCASE('SO4')
+
+
+
 ;**Position variables (not identified previously**
 vn=where(STRMATCH(file_vars,'LAT*',/FOLD_CASE) EQ 1,vnval)
 if vnval eq 1 then var_names_cf[vn]='LATITUDE'
@@ -567,6 +576,9 @@ print,"End of match"
 print,"file_vars = ",file_vars
 print,"spec_arr = ",spec_arr
 print,"var_names_cf = ",var_names_cf
+
+;var_names_cf = STRLOWCASE(var_names_cf)
+;print,"var_names_cf = ",var_names_cf
 
 print,"***************"
 print,""

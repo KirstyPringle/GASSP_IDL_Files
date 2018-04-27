@@ -59,7 +59,10 @@
 pro write_netCDF, data, filename, tagname_arr, tagrspn_arr, num_var2, $
                   var_natts, varatt, varatt_val, status, dim_name, dim_size, clobber=clobber
 
-print, 'Writing data to GASSP Level 2 netCDF file'
+help, data, /st
+print,tag_names(data)
+print,STRLOWCASE(tag_names(data))
+
 ;print, tag_names(data)
 ;
 ;	Generic "status" values
@@ -92,7 +95,7 @@ if (n_params(0) lt 2) then begin
 	if (strlen(filename) lt 1) then return
 endif
 dir_path = ''
-att_filename = tag_names( data, /structure_name ) + '.att'
+att_filename = STRLOWCASE(tag_names( data, /structure_name )) + '.att'
 if keyword_set(path) then dir_path = path
 if keyword_set(att_file) then att_filename = att_file
 att_filename = dir_path + att_filename
@@ -112,7 +115,7 @@ var_def = temp_def
 ;
 ;	define first structure entry into "var_def" for the "data" structure
 ;
-var_def[0].name = tag_names( data, /structure_name )
+var_def[0].name = STRLOWCASE(tag_names( data, /structure_name ))
 var_def[0].isVar = 0
 var_def[0].tag_index = 0
 var_def[0].var_size = size( data )
@@ -146,7 +149,7 @@ while (extra_var gt 0) and (nest_level le 4) do begin
 		;
 		if ( var_def[j].isVar eq 0 ) then begin
 			theData = *(var_def[j].var_ptr)
-			tnames = tag_names( theData )
+			tnames = STRLOWCASE(tag_names( theData ))
                         ;print, tnames
 			temp_index = var_def[j].struct_index
 			k_total = n_tags( theData ) - 1
@@ -222,7 +225,8 @@ status = OK_STATUS
 ;
 ndimmax=n_elements(dim_size)
 for idim=0,ndimmax-1 do begin
-   var_dim = NCDF_DIMDEF( fid, STRUPCASE(dim_name[idim]), dim_size[idim] );;dim_name[idim]
+   ;var_dim = NCDF_DIMDEF( fid, STRUPCASE(dim_name[idim]), dim_size[idim] );;dim_name[idim]
+   var_dim = NCDF_DIMDEF( fid, STRLOWCASE(dim_name[idim]), dim_size[idim] );;dim_name[idim]
    if strmatch(dim_name[idim],'flag_length',/fold_case) eq 1 then $
    str_did=var_dim ;need string length for AMF station files
    if idim eq 0 then dim_id=var_dim $
@@ -283,7 +287,7 @@ for k=0,num_var-1 do begin
                else var_dim_id=var_dim_id[index];For ARM AMF station data
                index++
             endelse
-            ;print,dim_name[var_dim_id],var_def[k].name,var_dim_id,nmatchvals
+            print,dim_name[var_dim_id],var_def[k].name,var_dim_id,nmatchvals
          endif
          
          ;-Define the dimensions of the variable in terms 
@@ -340,6 +344,8 @@ for itag=0,ntags-1 do begin
 endfor
 for k=0,num_var2-1 do begin
     for jj=0,var_natts[k]-1 do begin
+
+       ;;print,' k = ',k,' jj = ',jj, 'varatt[k,jj]=',varatt[k,jj],' val = ',varatt_val[k,jj]
 
        ;;if (varatt[k,jj] eq 'units') or (varatt[k,jj] eq 'missing_value') or $
        ;; ;;;****NOT ONLY THESE VARIABLE ATTRIBUTES***
@@ -416,6 +422,7 @@ for k=0,num_var-1 do begin
 			end
 		endcase
                 NCDF_VARPUT, fid, var_id[k], theData
+                ;print,"var_id ",var_id
                 ;help, thedata
                 ;print, max(thedata)
 	endif
@@ -433,6 +440,7 @@ for k=0,num_var_def-1 do begin
 	if ( ptr_valid( var_def[k].var_ptr ) ) then ptr_free, var_def[k].var_ptr
 endfor
 
+print,'End of Write'
 
 return
 end

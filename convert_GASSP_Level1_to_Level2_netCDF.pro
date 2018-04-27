@@ -8,20 +8,21 @@
 
 ;; Updated for version vn2.3
 
-projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
-         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
-         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
-         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
-         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
-         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
-         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
-         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
-         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
-         'PEMWestB','PEMWestA','AMF_stations','EBAS_ACTRIS'] 
+;projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
+;         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
+;         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
+;         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
+;         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
+;         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
+;         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
+;         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
+;         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
+;         'PEMWestB','PEMWestA','AMF_stations','EBAS_ACTRIS'] 
 
-;;projarr=['A-PAD']
+;projarr=['VOCALS']
 ;;projarr=['IMPROVE','A-PAD','EBAS_ACTRIS']
-;projarr=['IMPROVE']
+;;projarr=['IMPROVE']
+projarr=['AMF_stations']
 
 ;;;seg fault on 17196, /nfs/a107/ear3clsr/GASSP/Processed_data/AMF_stations/EasternNorthAtlantic/CCN.enaaosccn100C1.a1.20140112.000000.nc
 
@@ -43,7 +44,7 @@ SPAWN,'mv GASSP_IDL_Files.tar /nfs/see-fs-02_users/earkpr/arch4/DataVisualisatio
 ;path='/nfs/a201/earnadr/GASSP/working_code/'
 ;;file=path+'Processed_file_list_latest.txt'
 ;;file='Processed_file_list_latest.txt'
-file='Processed_file_list_latest.txt'
+file='Processed_file_list_latest_short.txt'
 openr,lun,file,/get_lun
 header=''
 readf,lun,header
@@ -52,15 +53,27 @@ readf,lun,filearr
 close,lun & free_lun,lun
 nfiles=file_lines(file)-1
 
-time_cf='Time'
-lat_cf='Latitude'
-lon_cf='Longitude'
-alt_cf='Altitude'
-rh_cf ='Relative_humidity'
-palt_cf='Pressure_altitude';?? barometric_altitude
-temp_cf='Air_temperature'
-pres_cf='Air_pressure'
-dpres_cf='Dynamic_pressure'
+;time_cf='Time'
+;lat_cf='Latitude'
+;lon_cf='Longitude'
+;alt_cf='Altitude'
+;rh_cf ='Relative_humidity'
+;palt_cf='Pressure_altitude';?? barometric_altitude
+;temp_cf='Air_temperature'
+;pres_cf='Air_pressure'
+;dpres_cf='Dynamic_pressure'
+
+time_cf='time'
+lat_cf='latitude'
+lon_cf='longitude'
+alt_cf='altitude'
+rh_cf ='relative_humidity'
+palt_cf='pressure_altitude';?? barometric_altitude
+temp_cf='air_temperature'
+pres_cf='air_pressure'
+dpres_cf='dynamic_pressure'
+
+
 
 ;;outdir='/nfs/a158/earnadr/GASSP/Level_2_test/'
 
@@ -93,8 +106,8 @@ for i=0L,nfiles-1 do begin
      read_netCDF, filename, data, attributes, status, dim_name, dim_size, $
        gloatt, gloatt_val, varatts, varatts_val, nvaratts
     print, tag_names(data)
-    ;help,data,/structure
-    ;help, data.(0)
+    help,data,/structure
+    help, data.(0)
     ;help, data.time
 
     ntime=n_elements(data.(0))
@@ -136,11 +149,17 @@ for i=0L,nfiles-1 do begin
     print,'Variable names NetCDF:   ',var_names
     print,'Variable units:',unit_arr
     print,'Species short names:', spec_arr
+
       
     update_posvar_names_cfcompliant,gloatt,gloatt_val,platform,var_names,$
                                     time_cf,lat_cf,lon_cf,alt_cf,rh_cf,$
                                     palt_cf,temp_cf,pres_cf,dpres_cf,$
                                     time_varname,var_names_cf
+
+
+    ;;Convert var_names to lower case
+    ;var_names = STRLOWCASE(var_names)
+    ;print,'VAR_NAMES = ',var_names
  
     ;-Replace variable names with species short names
     variables=where(var_names_cf eq '',varvals)
@@ -162,9 +181,11 @@ for i=0L,nfiles-1 do begin
           match_varnames_standardnames,var_names,spec_arr,var_names_cf
        endif
     endelse
-    print, 'Final variable names: ',var_names_cf
-    print, ''
-    print,'CF-compliant variable names: ',var_names_cf
+    ;print, 'Final variable names: ',var_names_cf
+    ;var_names_cf = STRLOWCASE(var_names_cf)
+    ;print, 'Final variable names: ',var_names_cf
+    ;print, ''
+    ;print,'CF-compliant variable names: ',var_names_cf
     
     ;-Rename dimensions to CF names
     for idim=0,n_elements(dim_name)-1 do begin
@@ -600,10 +621,9 @@ for i=0L,nfiles-1 do begin
 	FOR xx =0, n_elements(var_write_inds)-1 DO BEGIN
 	
 		;Need to recreate the variables that the writing code requires containing only the variable to be written to this particular file
-		
 		tmp1="ss2=CREATE_STRUCT('"+anc_var_names(0)+"',ss."+anc_var_names(0)+")"
 		tmp2=EXECUTE(tmp1)
-		
+
 		FOR xxx=1,n_elements(anc_var_names)-1 DO BEGIN
 		
 			tmp1="ss2=CREATE_STRUCT(ss2,'"+anc_var_names(xxx)+"',ss."+anc_var_names(xxx)+")"
@@ -765,12 +785,82 @@ for i=0L,nfiles-1 do begin
 		fileproc=outdir+proj+'/'+fileout2.compress()
 	
 		;Use existing write_netCDF procedure to do writing
+
+		print, 'tag_names(ss2) = ',tag_names(ss2)
+
+                ; Add in missing standard_name attributes
+
+                ; Check if the air_pressure variable exists
+		variable_names = tag_names(ss2)
+                print,variable_names
+
+
+                print,variable_names[3]
+                print,variable_names[4]
+
+                air_pres_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_pressure'), /FOLD_CASE) EQ 1)
+
+                print,"nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_pres_index]
+                print,nvaratts_new2
+                print,"air_pres_index = ",air_pres_index
+
+                if(air_pres_index gt 0) then begin
+                    ;Check if air_pressure already has a standard_name attribute
+                    n_atts = nvaratts_new2[air_pres_index]
+                    standard_name_pres_index = WHERE(STRMATCH(varatts_new2[air_pres_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
+                    if( standard_name_pres_index eq -1)then begin
+                       print,"adding standard_name"
+                       print," in loop nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_pres_index]
+                       print,nvaratts_new2
+                       nvaratts_new2[air_pres_index] = nvaratts_new2[air_pres_index]+1
+                       print," in loop nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_pres_index]
+                       print,nvaratts_new2
+                       varatts_new2[air_pres_index,n_atts] = "standard_name"
+                       varatts_val_new2[air_pres_index,n_atts] = "air_pressure monkey"
+                    endif
+                endif
+                print,""
+                print,"TEMPERATURE"
+                print,""
+
+                air_temp_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_temperature'), /FOLD_CASE) EQ 1)
+                print,"air_temp_index = ",air_temp_index
+                print,"nvaratts_new2[air_temp_index] = ",nvaratts_new2[air_temp_index]
+                print,nvaratts_new2
+
+                if(air_temp_index gt 0) then begin
+                    ;Check if air_temperature already has a standard_name attribute
+                    n_atts = nvaratts_new2[air_temp_index]
+                    print,"all temp atts = ",varatts_new2[air_temp_index,0:n_atts-1]
+                    standard_name_temp_index = WHERE(STRMATCH(varatts_new2[air_temp_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
+                    if( standard_name_temp_index eq -1)then begin
+                       print,"adding standard_name"
+                       print,nvaratts_new2
+                       nvaratts_new2[air_temp_index] = nvaratts_new2[air_temp_index]+1
+                       print," in loop nvaratts_new2[air_temp_index] = ",nvaratts_new2[air_temp_index]
+                       print,nvaratts_new2
+                       varatts_new2[air_temp_index,n_atts] = "standard_name"
+                       varatts_val_new2[air_temp_index,n_atts] = "air_temperature monkey"
+
+                       print,"varatts_new2"
+                       print,varatts_new2
+                       print,""
+                       print,"varatts_val_new2"
+                       print,varatts_val_new2
+                       print,""
+                       print,fileproc
+                       print,""
+                       ;;stop
+                    endif
+                endif
+                print,"nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_temp_index]
+                print,nvaratts_new2
+
+
 		write_netCDF, ss2, fileproc, gloatt, gloatt_val, $
-					num_var2, nvaratts_new2, varatts_new2, varatts_val_new2, $
-					status, dim_name, dim_size, /clobber
+		          num_var2, nvaratts_new2, varatts_new2, varatts_val_new2, $
+		          status, dim_name, dim_size, /clobber
 		
-		print, tag_names(ss2)
-  
 		print,'***********************************************************************************************************'
 		print,'Created netCDF file: ',fileproc
 		print,'***********************************************************************************************************'
