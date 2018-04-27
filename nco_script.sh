@@ -7,8 +7,7 @@
 
 # run with:  bash nco_script.sh
 
-
-DIR='/nfs/a201/earkpr/DataVisualisation/GASSP/Nigel_Code/Level2/'
+DIR='/nfs/a201/earkpr/DataVisualisation/GASSP/GASSP_Level_2_Data/'
 
 find $DIR -name "*.nc" -print0 | while read -d $'\0' file
 do

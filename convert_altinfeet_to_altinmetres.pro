@@ -3,6 +3,11 @@ PRO convert_altinfeet_to_altinmetres,gloatt,gloatt_val,var_names_cf,$
 
 altmin=str2num((gloatt_val[where(gloatt[*] eq 'Vertical_Min')])[0])
 altmax=str2num((gloatt_val[where(gloatt[*] eq 'Vertical_Max')])[0])
+
+print,"convert_altinfeet_to_altinmetres"
+print,"var_names_cf",var_names_cf
+print,"alt_cf",alt_cf
+
 aind=where(var_names_cf eq alt_cf,valalt)
 pind=where(var_names_cf eq palt_cf,valpalt)
 if (valalt eq 1) and (valpalt eq 1) then begin

@@ -8,5 +8,5 @@
 .compile update_posvar_names_cfcompliant
 .compile write_netCDF
 .r convert_GASSP_Level1_to_Level2_netCDF.pro
-$ bash nco_script.sh
+#### $ bash nco_script.sh
 

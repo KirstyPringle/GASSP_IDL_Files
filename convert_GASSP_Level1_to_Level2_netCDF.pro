@@ -87,6 +87,8 @@ for i=0L,nfiles-1 do begin
    if i eq 17196 then goto,skip_file
 
    str_arr=strsplit(filearr[i],'/',/extract)
+   print,"str_arr  = ",str_arr
+
    proj=str_arr[5]
    str=WHERE(STRMATCH(projarr,proj,/FOLD_CASE) EQ 1,matchvals)
    project=projarr[str]
@@ -792,70 +794,67 @@ for i=0L,nfiles-1 do begin
 
                 ; Check if the air_pressure variable exists
 		variable_names = tag_names(ss2)
+
                 print,variable_names
 
-
-                print,variable_names[3]
-                print,variable_names[4]
-
                 air_pres_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_pressure'), /FOLD_CASE) EQ 1)
-
-                print,"nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_pres_index]
-                print,nvaratts_new2
-                print,"air_pres_index = ",air_pres_index
-
                 if(air_pres_index gt 0) then begin
-                    ;Check if air_pressure already has a standard_name attribute
+                    print,"air_pres_index = ",air_pres_index
+
+                    ; Check if air_pressure already has a standard_name attribute
                     n_atts = nvaratts_new2[air_pres_index]
+                    print,"n_atts = ",n_atts
+
                     standard_name_pres_index = WHERE(STRMATCH(varatts_new2[air_pres_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
+                    print,"standard_name_pres_index = ",standard_name_pres_index
+
                     if( standard_name_pres_index eq -1)then begin
-                       print,"adding standard_name"
-                       print," in loop nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_pres_index]
-                       print,nvaratts_new2
-                       nvaratts_new2[air_pres_index] = nvaratts_new2[air_pres_index]+1
-                       print," in loop nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_pres_index]
-                       print,nvaratts_new2
-                       varatts_new2[air_pres_index,n_atts] = "standard_name"
-                       varatts_val_new2[air_pres_index,n_atts] = "air_pressure monkey"
+                        nvaratts_new2[air_pres_index] = nvaratts_new2[air_pres_index]+1
+                        varatts_new2[air_pres_index,n_atts] = "standard_name"
+                        varatts_val_new2[air_pres_index,n_atts] = "air_pressure"
+
+                        print," varatts_new2 =",varatts_new2[air_pres_index,n_atts]
+                        print," varatts_val_new2 = ",varatts_val_new2[air_pres_index,n_atts]
                     endif
                 endif
-                print,""
-                print,"TEMPERATURE"
-                print,""
-
+ 
                 air_temp_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_temperature'), /FOLD_CASE) EQ 1)
-                print,"air_temp_index = ",air_temp_index
-                print,"nvaratts_new2[air_temp_index] = ",nvaratts_new2[air_temp_index]
-                print,nvaratts_new2
 
                 if(air_temp_index gt 0) then begin
-                    ;Check if air_temperature already has a standard_name attribute
+;                    ; Check if air_temperature already has a standard_name attribute
                     n_atts = nvaratts_new2[air_temp_index]
-                    print,"all temp atts = ",varatts_new2[air_temp_index,0:n_atts-1]
                     standard_name_temp_index = WHERE(STRMATCH(varatts_new2[air_temp_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
                     if( standard_name_temp_index eq -1)then begin
-                       print,"adding standard_name"
-                       print,nvaratts_new2
-                       nvaratts_new2[air_temp_index] = nvaratts_new2[air_temp_index]+1
-                       print," in loop nvaratts_new2[air_temp_index] = ",nvaratts_new2[air_temp_index]
-                       print,nvaratts_new2
-                       varatts_new2[air_temp_index,n_atts] = "standard_name"
-                       varatts_val_new2[air_temp_index,n_atts] = "air_temperature monkey"
-
-                       print,"varatts_new2"
-                       print,varatts_new2
-                       print,""
-                       print,"varatts_val_new2"
-                       print,varatts_val_new2
-                       print,""
-                       print,fileproc
-                       print,""
-                       ;;stop
+                        nvaratts_new2[air_temp_index] = nvaratts_new2[air_temp_index]+1
+                        varatts_new2[air_temp_index,n_atts] = "standard_name"
+                        varatts_val_new2[air_temp_index,n_atts] = "air_temperature"
                     endif
                 endif
-                print,"nvaratts_new2[air_pres_index] = ",nvaratts_new2[air_temp_index]
-                print,nvaratts_new2
 
+                rh_index = WHERE(STRMATCH(variable_names, STRUPCASE('relative_humidity'), /FOLD_CASE) EQ 1)
+                print, "variable_names = ",variable_names
+                print, "rh_index = ", rh_index
+
+                if(rh_index gt 0) then begin
+                    ; Check if relative_humidity already has a standard_name attribute
+                    n_atts = nvaratts_new2[rh_index]
+                    standard_name_rh_index = WHERE(STRMATCH(varatts_new2[rh_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
+                    if( standard_name_rh_index eq -1)then begin
+                        nvaratts_new2[rh_index] = nvaratts_new2[rh_index]+1
+                        varatts_new2[rh_index,n_atts] = "standard_name"
+                        varatts_val_new2[rh_index,n_atts] = "relative_humidity"
+                        print,"HERE "
+                        print,""
+                        print,""
+                        print,""
+                        print,"varatts_val_new2 = ",varatts_val_new2[rh_index,n_atts]
+                        print,""
+                        print,""
+                        print,""
+                        print,""
+                        print,""
+                    endif
+                endif
 
 		write_netCDF, ss2, fileproc, gloatt, gloatt_val, $
 		          num_var2, nvaratts_new2, varatts_new2, varatts_val_new2, $
