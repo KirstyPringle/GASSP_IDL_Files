@@ -520,20 +520,16 @@ if ( num_att gt 0 ) then begin
             for jj=0,var_inq[k].natts-1 do begin
                 att_name = NCDF_ATTNAME( fid, k, jj )
                 NCDF_ATTGET, fid, k, att_name, att_value
-                ;;print,'att_name =',att_name,' att_value = ',att_value
+                print,'att_name =',att_name,' att_value = ',att_value
 
                 if (att_name eq 'missing_value') or $ ;Added for CARIBIC
                    (att_name eq  '_FillValue') then begin
 
-                   ;KP_Comment:  AMS_GlobalDatabase had incorrect _FillValue = 0.0, should be NaN
-                   if(att_value = 'NaN')then begin
-                       att_value2 = !Values.F_NaN
-                   endif else begin
-                      if(ISA(att_value, /SCALAR) eq 1) then begin
-                        att_value2=str2num(att_value, TYPE = type)
-                        if type ne 1 then att_value=att_value2 ;For EBAS data missing value = 9
-                      endif
-                  endelse
+                   if(ISA(att_value, /SCALAR) eq 1) then begin
+                      att_value2=str2num(att_value, TYPE = type)
+                     if type ne 1 then att_value=att_value2 ;For EBAS data missing value = 9
+
+                   endif
                 endif
 
                 att_str = string( att_value )
