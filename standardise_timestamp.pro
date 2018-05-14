@@ -36,7 +36,7 @@ if tinfo[2] ne '1970' then begin
       if ((size(time,/type) eq 4) or (size(time,/type) eq 5))$ ;FLOAT or DOUBLE
          and (diff lt 1.0) then begin                                      
          time_temp=long64(time*24*60*60) ;-Calculate time in seconds
-         print,'time_temp = ',time_temp
+         ;print,'time_temp = ',time_temp
 
          ;-Calculate # seconds since 1970-01-01
          if time[0] lt 1.0 then var_time=long64(jultime)* 24LL * 60 * 60 $ ;-Assumes day 1 of year is zero
@@ -45,8 +45,8 @@ if tinfo[2] ne '1970' then begin
          ;;zero but arrays starts on any other
          ;;day than 1st Jan
          time_new=time_temp+var_time
-         print,' time_new =',time_new
-         print,' var_names_cf =',var_names_cf
+         ;print,' time_new =',time_new
+         ;print,' var_names_cf =',var_names_cf
 
          ;-Test for end time stamps
          te=where(strmatch(var_names_cf,'TIME_END',/fold_case) eq 1,te_vals)

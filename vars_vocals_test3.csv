@@ -69,9 +69,10 @@ CCN_ss_calc,DEP,3,N,0
 flags_CMDL,DEP,3,N,0
 T_Ambient,ANC,1,N,0
 P_Ambient,ANC,1,N,0
-N_CCN_1,CCN,2,Y,flags_CMDL
-total_concentration,NUM,1,N,0
-number_size_distribution,NSD,1,Y,0
+RH_Ambient,ANC,1,N,0
+N_CCN_1,CCN,2,Y,flags_CMDL;T_Ambient;P_Ambient;RH_Ambient
+total_concentration,NUM,2,Y,sample_temperature;sample_pressure
+number_size_distribution,NSD,2,Y,sample_temperature;sample_pressure
 diameter_midpoint,DEP,3,N,diameter_midpoint;lower_size;d50;geometric_mean;mean;median;mode
 lower_size,DEP,3,N,0
 d50,DEP,3,N,0
@@ -825,7 +826,6 @@ ammonium,COMP,2,N,0
 chloride,COMP,2,N,0
 nitrate,COMP,2,N,0
 organic_mass,COMP,2,N,0
-numflag,DEP,3,N,0
 numflag_organic_mass,DEP,3,N,0
 numflag_ammonium,DEP,3,N,0
 numflag_chloride,DEP,3,N,0
@@ -833,7 +833,24 @@ numflag_nitrate,DEP,3,N,0
 numflag_sulphate_total,DEP,3,N,0
 pm25_mass,PM,2,Y,numflag_pm25_mass
 numflag_pm25_mass,DEP,3,N,0
-###particle_number_concentration_arithmetic_mean,NUM,2,N,0
-###particle_number_concentration_percentile_15.87,NUM,2,N,0
-###particle_number_concentration_percentile_84.13,NUM,2,N,0
-###numflag,DEP,3,N,0
+particle_number_concentration_arithmetic_mean,NUM,2,Y,particle_number_concentration_percentile_15p87;particle_number_concentration_percentile_84p13;numflag
+particle_number_concentration_percentile_15p87,DEP,3,N,0
+particle_number_concentration_percentile_84p13,DEP,3,N,0
+numflag_particle_number_concentration,DEP,3,N,0
+particle_number_concentration_maximum,DEP,3,N,0
+particle_number_concentration_median,DEP,3,N,0
+particle_number_concentration_stddev,DEP,3,N,0
+particle_number_concentration_minimum,DEP,3,N,0
+particle_number_concentration,NUM,2,Y,numflag_particle_number_concentration;particle_number_concentration_maximum;particle_number_concentration_minimum;particle_number_concentration_median;numflag;particle_number_concentration_stddev;numflag_particle_number_concentration_percentile_84p13;numflag_particle_number_concentration_percentile_15p87; particle_number_concentration_0; particle_number_concentration_1; particle_number_concentration_2; particle_number_concentration_3; particle_number_concentration_4
+numflag,DEP,3,N,0
+pressure,ANC,1,Y,numflag_air_pressure; numflag_pressure
+temperature,ANC,1,Y,numflag_temperature; numflag_air_temperature
+numflag_air_pressure,DEP,1,3,0
+numflag_air_temperature,DEP,3,N,0
+numflag_particle_number_concentration_percentile_15p87,DEP,3,N,0
+numflag_particle_number_concentration_percentile_84p13,DEP,3,N,0
+particle_number_concentration_0,DEP,1,3,0
+particle_number_concentration_1,DEP,1,3,0
+particle_number_concentration_2,DEP,1,3,0
+particle_number_concentration_3,DEP,1,3,0
+particle_number_concentration_4,DEP,1,3,0

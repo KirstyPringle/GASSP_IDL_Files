@@ -2,7 +2,7 @@ PRO standardise_unit_strings,unit_arr,var_names_cf
 
 units2change=$
    ['/cm3','/cm^3','1/cm^3','1/cm3','cm^-3','#/cm3','#cm-3','particles/cm^3','parts/cc','#/cm^3','1/cm3@stp','1/cm^3_STP',$
-    'per std cc','particle cm-3 at 1atm, 0C','parts/cc','count/cm^3','cm3',$
+    'per std cc','particle cm-3 at 1atm, 0C','parts/cc','count/cm^3','cm3',' 1/cm3',$
     'um3/cm3','um^3/cm^3','um3cm-3','micrometers^3/cm^3','um3/cm3@ambient','um^3/scc','um3 cm-3 at 1atm, 0C','um3cm-3',$
     'um2/cm3','um^2/cm^3','um2cm-3','micrometers^2/cm^3','um2/cm3@ambient','um^2/scc','um2cm-3',$
     'ug/m^3','ug/m3','mg/m3','ugC/m3','ugstdm-3','µg / m3','ug/sm^3',' ug/m3',$
@@ -22,7 +22,7 @@ units2change=$
 
 stdunits=$
    ['cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3','cm-3',$
-    'cm-3','cm-3','cm-3','cm-3','cm-3',$
+    'cm-3','cm-3','cm-3','cm-3','cm-3','cm-3',$
     'um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3','um3 cm-3 ambient','um3 cm-3','um3 cm-3','um3 cm-3',$
     'um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3','um2 cm-3 ambient','um2 cm-3','um2 cm-3',$
     'ug m-3','ug m-3','ug m-3','ugC m-3','ug m-3','ug m-3','ug m-3','ug m-3',$  ;;ugs m-3??

@@ -9,6 +9,7 @@ lonvar_str=['*lon*']            ;,'longitude*']
 altvar_str=['*alt*','GGALT_NTL']
 tempvar_str=['ATX','*temp*','AT_3051','TAT_DI_R','T_STAT','St_Air_Tm*','TS','T_AMBIENT']
 rhvar_str=['*rh*','RH','*HUMIDITY*','RH_DLH_WATER','RELHUM','Rel_Hum*']
+altpvar_str=['*alt*p*','p*alt*','FMS_ALT_PRES_'] ;,'ALTITUDE_PRESSURE']
 presvar_str=['PSXC','*pres*','pre','*stat*pres*','BP_915',$
              'STATICPRS','PS_RVSM','P_STAT','Stat_Pr','PSTATIC','PSMB','P_AMBIENT']
 dpresvar_str=['*QCXC*']

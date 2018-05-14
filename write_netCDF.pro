@@ -342,14 +342,22 @@ for itag=0,ntags-1 do begin
    ;print,'Inserting tag: ',tagname_arr[itag]+' = '+tagrspn_arr[itag]
    skiptag:
 endfor
+
+print,'filename = ',filename
+print,'size(num_var2)=',size(num_var2)
+
 for k=0,num_var2-1 do begin
+
+    print,'size(var_natts[k])',size(var_natts[k])
+    print,k,' num_var2=',num_var2,' var_natts[k] ',var_natts[k]
+
     for jj=0,var_natts[k]-1 do begin
 
-       ;;print,' k = ',k,' jj = ',jj, 'varatt[k,jj]=',varatt[k,jj],' val = ',varatt_val[k,jj]
+       print,' k = ',k,' jj = ',jj, 'varatt[k,jj]=',varatt[k,jj],' val = ',varatt_val[k,jj]
 
-       ;;if (varatt[k,jj] eq 'units') or (varatt[k,jj] eq 'missing_value') or $
-       ;; ;;;****NOT ONLY THESE VARIABLE ATTRIBUTES***
-       ;;   (varatt[k,jj] eq 'long_name') then begin
+       ;if (varatt[k,jj] eq 'units') or (varatt[k,jj] eq 'missing_value') or $
+        ;;;****NOT ONLY THESE VARIABLE ATTRIBUTES***
+       ;   (varatt[k,jj] eq 'long_name') then begin
 
           if (varatt[k,jj] eq 'missing_value') or $
              (varatt[k,jj] eq 'TEMPORARY_FillValue') or $
@@ -378,6 +386,7 @@ for k=0,num_var2-1 do begin
                    else: NCDF_ATTPUT, fid, k, varatt[k,jj], varatt_val_temp
                 ENDCASE
              endif else begin
+                print,"IF STATEMENT IN WRITE"
                 NCDF_ATTPUT, fid, k, varatt[k,jj], !Values.F_NAN
              endelse 
           endif else begin

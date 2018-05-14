@@ -8,21 +8,24 @@
 
 ;; Updated for version vn2.3
 
-;projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
-;         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
-;         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
-;         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
-;         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
-;         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
-;         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
-;         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
-;         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
-;         'PEMWestB','PEMWestA','AMF_stations','EBAS_ACTRIS'] 
+projarr=['CARIBIC','TRACEP','TRACEA','IMPROVE','A-PAD','SOS','ITCT2004','ITCT2002','TEXAQS2006','TROMPEX','GoAmazon',$
+         'SEAC4RS','MAMM','HolmeMoss','HIPPO','RONOCO','BORTAS','AMMA','COPS','Chilbolton','RHaMBLe',$
+         'MIRAGE','PEMTropicsB','PEMTropicsA','PASE','ACE1','ACE2','ACEASIA','VOCALS','INTEX-A','INDOEX','ARCTAS',$
+         'CLACE6','OP3','EUCAARI','Weybourne','AEGEAN-GAME','ACCACIA','COPE','CAST','CARRIBA',$
+         'Melpitz','A-FORCE','CALNEX','NACHTT','Polarstern','EM25','APPRAISE','Bird_Island',$
+         'CAREBeijing','PRIDE_PRD','AMAZE-08','WACS2014','WACS2012','UBWOS2012','UBWOS2013',$
+         'TEXAQS2000','RITS94','RITS93','NEAQS2004','NEAQS2002','AEROINDO99',$
+         'NAURU99','MAGE92','INTEX-B','ICEALOT','EUSAAR','Environment_Canada',$
+         'DYNAMO','DC3','ARCPAC2008','AMS_GlobalDatabase','DISCOVERAQ','AOE2001','AOE1996',$
+         'PEMWestB','PEMWestA','AMF_stations','EBAS_ACTRIS'] 
 
-;projarr=['VOCALS']
+;;projarr=['VOCALS']
 ;;projarr=['IMPROVE','A-PAD','EBAS_ACTRIS']
 ;;projarr=['IMPROVE']
-projarr=['AMF_stations']
+;projarr=['AMF_stations']
+
+;projarr=['EBAS_ACTRIS']
+;projarr=['AMS_GlobalDatabase']
 
 ;;;seg fault on 17196, /nfs/a107/ear3clsr/GASSP/Processed_data/AMF_stations/EasternNorthAtlantic/CCN.enaaosccn100C1.a1.20140112.000000.nc
 
@@ -30,7 +33,8 @@ projarr=['AMF_stations']
 ;;EBAS_ACTRIS/pm2_5 files are: 826,1323
 
 ;;path='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data'
-outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data/'
+;outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data/'
+outdir='/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data_V1/'
 
 print,outdir
 
@@ -39,19 +43,23 @@ SPAWN,'rm GIT_REVISION_Number.dat'
 SPAWN,'git log --stat > GIT_REVISION_Number.dat'
 SPAWN,'ls' 
 SPAWN,'tar -cvzf GASSP_IDL_Files.tar *'
-SPAWN,'mv GASSP_IDL_Files.tar /nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data/.'
+SPAWN,'mv GASSP_IDL_Files.tar /nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/GASSP_Level_2_Data_V1/.'
  
 ;path='/nfs/a201/earnadr/GASSP/working_code/'
 ;;file=path+'Processed_file_list_latest.txt'
-;;file='Processed_file_list_latest.txt'
-file='Processed_file_list_latest_short.txt'
+;file='Processed_file_list_latest.txt'
+file='Processed_file_list_latest.txt'
+;file='Processed_file_list_latest_EBASNumber.csv'
 openr,lun,file,/get_lun
 header=''
 readf,lun,header
 filearr=strarr(file_lines(file)-1)
+
 readf,lun,filearr
 close,lun & free_lun,lun
 nfiles=file_lines(file)-1
+
+print,'filearr =',filearr
 
 ;time_cf='Time'
 ;lat_cf='Latitude'
@@ -83,6 +91,9 @@ OPENW,lunvar,'/nfs/see-fs-02_users/earkpr/arch4/DataVisualisation/GASSP/Nigel_Co
 
 for i=0L,nfiles-1 do begin
 ;for i=49910,49910 do begin
+
+   print,' i = ', i
+   print,'filearr = ',filearr[i]
 
    if i eq 17196 then goto,skip_file
 
@@ -139,6 +150,7 @@ for i=0L,nfiles-1 do begin
     unit_arr=strarr(num_var)
     for ivar=0,num_var-1 do unit_arr[ivar]=reform(varatts_val[ivar,where(varatts[ivar,*] eq 'units')])
     miss_arr=reform(varatts_val[where(varatts eq 'missing_value')])
+
 
     ;KP_Comment:  For station data re-name missing_value to _Fillvalue for cf-compliance
     ;  Just for Station, or all data?   if(platform eq 'Station')then varatts[where(varatts eq 'missing_value')]='_FillValue'
@@ -198,11 +210,11 @@ for i=0L,nfiles-1 do begin
 
     ;-Standardise time stamp
     print,'BEF standardise_timestamp'
-    print,'gloatt = ',gloatt
-    print,'gloatt_val = ',gloatt_val
-    print,'var_names_cf = ',var_names_cf
-    print,'time_cf = ',time_cf
-    
+    ;print,'gloatt = ',gloatt
+    ;;;print,'gloatt_val = ',gloatt_val
+    ;print,'var_names_cf = ',var_names_cf
+    ;print,'time_cf = ',time_cf
+    ;
     standardise_timestamp,gloatt,gloatt_val,var_names_cf,time_cf,$
                           unit_arr,miss_arr,data,time_new,timeend,timestart
 
@@ -227,6 +239,21 @@ for i=0L,nfiles-1 do begin
        ;;print,'timeend = ',timeend,' timestart = ', timestart
     endif
 
+    ; AMS_GlobalDatabase files have zero as missing data attribute value, should be nan or NaN.
+    if(projarr[str] eq 'AMS_GlobalDatabase')then begin
+       print,'var_names_cf = ',var_names_cf
+       print,'miss_arr = ',miss_arr
+
+       for index=0,n_elements(miss_arr)-1 do begin
+           print,'in loop index = ',index,miss_arr[index]
+           miss_arr[index] = 'NaN'
+           print,'in loop after = ',index,miss_arr[index]
+           print,''
+       endfor
+       print,'AFT miss_arr = ',miss_arr
+    endif
+
+
     ;-Convert altitude variable to metres
     if Platform eq 'Aircraft' then $
        convert_altinfeet_to_altinmetres,gloatt,gloatt_val,var_names_cf,$
@@ -238,12 +265,19 @@ for i=0L,nfiles-1 do begin
                          lon_cf,miss_arr,data
 
     ;-Standardised unit strings
+    print,"bef standardise_unit_strings"
     standardise_unit_strings,unit_arr,var_names_cf
+    print,"aft standardise_unit_strings"
+    print,'AFT1 miss_arr = ',miss_arr
 
+    print,"bef Replace units with new units"
     ;-Replace units with new units
     for ivar=0,num_var-1 do varatts_val[ivar,where(varatts[ivar,*] eq 'units')]=unit_arr[ivar]
+    print,"aft Replace units with new units"
 
     ;-Get info to create data structure        
+    print,"AAA"
+    print,'AFT2 miss_arr = ',miss_arr
     var_ptr=PTRARR(num_var)
     for ivar=0,num_var-1 do begin
 
@@ -377,6 +411,10 @@ for i=0L,nfiles-1 do begin
 	FOR tt=0,n_tags(ss)-1 DO BEGIN
 	
 		;Test for missing variable in lookup table
+
+                ;print,"STRUPCASE(var_all) ",STRUPCASE(var_all)
+                ;print,"ss_tags(tt)",ss_tags(tt)
+                ;print,"tt = ",tt
 		var_test=where(STRUPCASE(var_all) eq ss_tags(tt))
 		
 		CASE var_test(0) OF
@@ -788,73 +826,96 @@ for i=0L,nfiles-1 do begin
 	
 		;Use existing write_netCDF procedure to do writing
 
-		print, 'tag_names(ss2) = ',tag_names(ss2)
+		;print, 'tag_names(ss2) = ',tag_names(ss2)
 
                 ; Add in missing standard_name attributes
 
                 ; Check if the air_pressure variable exists
 		variable_names = tag_names(ss2)
 
-                print,variable_names
+                print,''
+                print,''
+                print,''
+                print,"BEF PRESS variable_names ",variable_names
+                print,size(varatts_val_new2)
+                for index=0,n_elements(varatts_val_new2)-1 do begin
+                   print,"varatts_val_new2 index", index,'varatts_new2=',varatts_new2[index],' vals=', varatts_val_new2[index]
+                endfor
 
                 air_pres_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_pressure'), /FOLD_CASE) EQ 1)
                 if(air_pres_index gt 0) then begin
-                    print,"air_pres_index = ",air_pres_index
-
                     ; Check if air_pressure already has a standard_name attribute
                     n_atts = nvaratts_new2[air_pres_index]
-                    print,"n_atts = ",n_atts
-
                     standard_name_pres_index = WHERE(STRMATCH(varatts_new2[air_pres_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
-                    print,"standard_name_pres_index = ",standard_name_pres_index
-
                     if( standard_name_pres_index eq -1)then begin
+
+                        ; increase size of varatts_new2 array by 1 for standard_name
+                        ; make a new larger array varatts_temp, then set varatts_new2=varatts_temp
+                        zz=size(varatts_new2)
+                        varatts_temp = strarr([zz[0],zz[1]+1])
+                        varatts_temp = varatts_new2
+                        varatts_new2=strarr([zz[0],zz[1]+1])
+                        varatts_new2=varatts_temp
+
                         nvaratts_new2[air_pres_index] = nvaratts_new2[air_pres_index]+1
                         varatts_new2[air_pres_index,n_atts] = "standard_name"
                         varatts_val_new2[air_pres_index,n_atts] = "air_pressure"
 
-                        print," varatts_new2 =",varatts_new2[air_pres_index,n_atts]
-                        print," varatts_val_new2 = ",varatts_val_new2[air_pres_index,n_atts]
-                    endif
+                   endif
                 endif
- 
-                air_temp_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_temperature'), /FOLD_CASE) EQ 1)
 
+                air_temp_index = WHERE(STRMATCH(variable_names, STRUPCASE('air_temperature'), /FOLD_CASE) EQ 1)
                 if(air_temp_index gt 0) then begin
-;                    ; Check if air_temperature already has a standard_name attribute
+                    ; Check if air_temperature already has a standard_name attribute
                     n_atts = nvaratts_new2[air_temp_index]
+                    print,'n_atts = ',n_atts
                     standard_name_temp_index = WHERE(STRMATCH(varatts_new2[air_temp_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
                     if( standard_name_temp_index eq -1)then begin
+
+                        ; increase size of varatts_new2 array by 1 for standard_name
+                        ; make a new larger array varatts_temp, then set varatts_new2=varatts_temp
+                        zz=size(varatts_new2)
+                        varatts_temp = strarr([zz[0],zz[1]+1])
+                        varatts_temp = varatts_new2
+                        varatts_new2=strarr([zz[0],zz[1]+1])
+                        varatts_new2=varatts_temp
+
                         nvaratts_new2[air_temp_index] = nvaratts_new2[air_temp_index]+1
                         varatts_new2[air_temp_index,n_atts] = "standard_name"
                         varatts_val_new2[air_temp_index,n_atts] = "air_temperature"
+                        
                     endif
                 endif
 
-                rh_index = WHERE(STRMATCH(variable_names, STRUPCASE('relative_humidity'), /FOLD_CASE) EQ 1)
-                print, "variable_names = ",variable_names
-                print, "rh_index = ", rh_index
 
+                rh_index = WHERE(STRMATCH(variable_names, STRUPCASE('relative_humidity'), /FOLD_CASE) EQ 1)
                 if(rh_index gt 0) then begin
                     ; Check if relative_humidity already has a standard_name attribute
                     n_atts = nvaratts_new2[rh_index]
                     standard_name_rh_index = WHERE(STRMATCH(varatts_new2[rh_index,0:n_atts-1], 'standard_name', /FOLD_CASE) EQ 1)
                     if( standard_name_rh_index eq -1)then begin
+                        ; increase size of varatts_new2 array by 1 for standard_name
+                        ; make a new larger array varatts_temp, then set varatts_new2=varatts_temp
+                        zz=size(varatts_new2)
+                        varatts_temp = strarr([zz[0],zz[1]+1])
+                        varatts_temp = varatts_new2
+                        varatts_new2=strarr([zz[0],zz[1]+1])
+                        varatts_new2=varatts_temp
+
                         nvaratts_new2[rh_index] = nvaratts_new2[rh_index]+1
                         varatts_new2[rh_index,n_atts] = "standard_name"
                         varatts_val_new2[rh_index,n_atts] = "relative_humidity"
-                        print,"HERE "
-                        print,""
-                        print,""
-                        print,""
-                        print,"varatts_val_new2 = ",varatts_val_new2[rh_index,n_atts]
-                        print,""
-                        print,""
-                        print,""
-                        print,""
-                        print,""
                     endif
                 endif
+
+                print,"AFT PRESS variable_names ",variable_names
+                print,size(varatts_val_new2)
+                for index=0,n_elements(varatts_val_new2)-1 do begin
+                   print,"varatts_val_new2 index", index,'varatts_new2=',varatts_new2[index],' vals=', varatts_val_new2[index]
+                endfor
+                print,''
+                print,''
+                print,''
 
 		write_netCDF, ss2, fileproc, gloatt, gloatt_val, $
 		          num_var2, nvaratts_new2, varatts_new2, varatts_val_new2, $
@@ -875,6 +936,7 @@ skip_file:
 
 ;stop
 endfor ;nfiles
+print,"GGG"
 
 CLOSE,lunvar
 
